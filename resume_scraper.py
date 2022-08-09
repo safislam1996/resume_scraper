@@ -27,16 +27,24 @@ for page in pages:
     pdf_page=page.save(IMG_PATH,'JPEG')
 
     #creating an window to fit the image
-    cv2.namedWindow("output", cv2.WINDOW_AUTOSIZE)
+    # cv2.namedWindow("output", cv2.WINDOW_AUTOSIZE)
     img_page=cv2.imread(IMG_PATH)
-    imS = cv2.resize(img_page, (960, 540))
-    cv2.imshow('img_page',imS)
+    # imS = cv2.resize(img_page, (960, 540))
+    # cv2.imshow('img_page',imS)
 
     #extracting the image to find the specific image..
     img_text=reader.readtext(img_page,decoder='beamsearch',beamWidth=10,detail=0)
     # cv2.putText(img_page,'CGPA')
-    cv2.waitKey(0)
-    print(img_text)       
+
+    
+    print(len(img_text))
+    print(img_text[0])
+    i=0
+    while(i<len(img_text)):
+
+        print(img_text[i])
+        i=i+1
+
+
  
     # Destroying present windows on screen
-    cv2.destroyAllWindows() 
