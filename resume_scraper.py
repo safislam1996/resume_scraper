@@ -1,9 +1,14 @@
 # from PyPDF2 import PdfFileReader
+
+import warnings
+warnings.filterwarnings('ignore')
 import easyocr
 import cv2
 from pdf2image import convert_from_path
 import os
 import numpy as np
+from io import BytesIO
+from PIL import Image
 
 # reader=PdfFileReader("safi_CV_1(1).pdf")
 # page=reader.pages[0]
@@ -13,10 +18,25 @@ reader=easyocr.Reader(['en'])
 IMAGE_PATH = 'pages/safi_CV_1(1).jpeg'
 
 for page in pages:
-    mypath='pages/'
+    mypath='pages'
     fname='{}.jpeg'.format(file.split('.')[0])
-    pdf_page=page.save(mypath+fname,'JPEG')
-    # img=cv2.imread('pages/')
-    img_page=cv2.imread(pdf_page)
-    img_text=reader.readtext(IMAGE_PATH,decoder='beamsearch',beamWidth=10,detail=0)
-    print(img_text)
+    print(fname)
+    IMG_PATH=str(mypath+'/'+fname)
+    print(IMG_PATH)
+
+    pdf_page=page.save(IMG_PATH,'JPEG')
+
+    #creating an window to fit the image
+    cv2.namedWindow("output", cv2.WINDOW_AUTOSIZE)
+    img_page=cv2.imread(IMG_PATH)
+    imS = cv2.resize(img_page, (960, 540))
+    cv2.imshow('img_page',imS)
+
+    #extracting the image to find the specific image..
+    img_text=reader.readtext(img_page,decoder='beamsearch',beamWidth=10,detail=0)
+    # cv2.putText(img_page,'CGPA')
+    cv2.waitKey(0)
+    print(img_text)       
+ 
+    # Destroying present windows on screen
+    cv2.destroyAllWindows() 
